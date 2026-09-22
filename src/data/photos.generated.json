@@ -1,0 +1,50 @@
+{
+  "iglesia": {
+    "src": "/photos/iglesia-1233.jpg",
+    "srcSet": "/photos/iglesia-640.jpg 640w, /photos/iglesia-1233.jpg 1233w",
+    "width": 1233,
+    "height": 818
+  },
+  "STD-11": {
+    "src": "/photos/std-11-1440.jpg",
+    "srcSet": "/photos/std-11-640.jpg 640w, /photos/std-11-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-29": {
+    "src": "/photos/std-29-1440.jpg",
+    "srcSet": "/photos/std-29-640.jpg 640w, /photos/std-29-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-3": {
+    "src": "/photos/std-3-1440.jpg",
+    "srcSet": "/photos/std-3-640.jpg 640w, /photos/std-3-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-33": {
+    "src": "/photos/std-33-1440.jpg",
+    "srcSet": "/photos/std-33-640.jpg 640w, /photos/std-33-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-34": {
+    "src": "/photos/std-34-1440.jpg",
+    "srcSet": "/photos/std-34-640.jpg 640w, /photos/std-34-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-60": {
+    "src": "/photos/std-60-1440.jpg",
+    "srcSet": "/photos/std-60-640.jpg 640w, /photos/std-60-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  },
+  "STD-63": {
+    "src": "/photos/std-63-1440.jpg",
+    "srcSet": "/photos/std-63-640.jpg 640w, /photos/std-63-1440.jpg 1440w",
+    "width": 1440,
+    "height": 2160
+  }
+}

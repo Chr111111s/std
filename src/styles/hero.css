@@ -1,0 +1,233 @@
+.hero-cover {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-height: max(690px, calc(100svh - 78px));
+  overflow: hidden;
+  background: #d6d9cd;
+}
+
+.hero-cover-background {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+}
+
+.hero-cover::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    180deg,
+    #fdfbf700 22%,
+    #fdfbf72b 39%,
+    #fdfbf7d9 63%,
+    #fdfbf7f7 85%,
+    #fdfbf7 100%
+  );
+}
+
+.cover-content {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-block: 300px 45px;
+}
+
+.cover-copy {
+  text-align: center;
+  animation: enter 1s both;
+}
+
+.cover-copy > .eyebrow {
+  font-size: 8px;
+  letter-spacing: 0.17em;
+  color: var(--deep-green);
+}
+
+.cover-names {
+  font-family: var(--font-serif);
+  font-size: clamp(76px, 17vw, 110px);
+  line-height: 0.85;
+  letter-spacing: -0.055em;
+  margin: 25px 0;
+}
+
+.cover-names > span:last-child {
+  display: block;
+  padding-left: 28px;
+}
+
+.cover-ampersand {
+  font-style: italic;
+  font-size: 0.62em;
+  color: var(--gold-ink);
+}
+
+.cover-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 23px;
+  color: var(--deep-green);
+  margin-top: 24px;
+}
+
+.cover-date {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 23px 0;
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  color: var(--deep-green);
+}
+
+.cover-date > span {
+  color: var(--gold-ink);
+}
+
+.hero-dedication {
+  display: grid;
+  gap: 45px;
+  padding-block: 65px 50px;
+}
+
+.hero-dedication > .hero-art {
+  width: min(345px, 87%);
+  height: 414px;
+  margin: 12px auto 0;
+}
+
+.hero-blessing {
+  text-align: center;
+  max-width: 480px;
+  margin-inline: auto;
+}
+
+.hero-blessing blockquote {
+  font-family: var(--font-serif);
+  font-size: clamp(27px, 3vw, 36px);
+  line-height: 1.4;
+  font-weight: 400;
+  margin: 22px 0 0;
+  text-wrap: pretty;
+}
+
+.blessing-rule {
+  display: block;
+  width: 42px;
+  height: 1px;
+  background: #c7b582;
+  margin: 28px auto 23px;
+}
+
+.blessing-signature {
+  font-family: var(--font-serif);
+  font-size: 21px;
+  color: var(--color-eucalyptus);
+}
+
+.blessing-signature em {
+  display: block;
+  margin-top: 4px;
+  font-size: 26px;
+}
+
+@media (min-width: 761px) {
+  .hero-cover {
+    min-height: clamp(660px, calc(100svh - 101px), 940px);
+  }
+
+  .hero-cover-background {
+    object-position: center 18%;
+  }
+
+  .hero-cover::after {
+    background: linear-gradient(
+      90deg,
+      #fdfbf7f5 0%,
+      #fdfbf7eb 22%,
+      #fdfbf7ba 40%,
+      #fdfbf733 63%,
+      #fdfbf70a 100%
+    );
+  }
+
+  .cover-content {
+    align-items: center;
+    justify-content: flex-start;
+    padding-block: 65px;
+  }
+
+  .cover-copy {
+    text-align: left;
+    max-width: 520px;
+  }
+
+  .cover-copy > .eyebrow {
+    font-size: 9px;
+  }
+
+  .cover-names {
+    font-size: clamp(96px, 9vw, 136px);
+    margin-block: 35px;
+  }
+
+  .cover-names > span:last-child {
+    padding-left: 42px;
+  }
+
+  .cover-subtitle {
+    font-size: 27px;
+  }
+
+  .cover-date {
+    justify-content: flex-start;
+    margin-block: 30px;
+    font-size: 11px;
+  }
+
+  .hero-dedication {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 75px;
+    padding-block: 85px 75px;
+  }
+
+  .hero-dedication > .hero-art {
+    width: min(100%, 420px);
+    height: 500px;
+    margin: 0 auto;
+  }
+
+  .hero-blessing {
+    padding-left: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover-copy {
+    animation: none;
+  }
+}
+
+@media print {
+  .hero-cover {
+    min-height: 500px;
+  }
+
+  .cover-content {
+    padding-block: 50px;
+  }
+
+  .hero-dedication {
+    break-inside: avoid;
+  }
+}
