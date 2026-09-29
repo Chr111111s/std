@@ -135,7 +135,19 @@ El número `60014617` se copia mediante Clipboard API. Se anuncia el éxito y, s
 | `npm.cmd run format`       | Aplicar Prettier                              |
 | `npm.cmd run format:check` | Comprobar el formato                          |
 
-La compilación se genera en `dist/`. Vite sirve las rutas directamente en desarrollo y preview. En producción, configura el alojamiento para servir `index.html` en las rutas de la aplicación; de lo contrario, abrir o recargar `/4` podría devolver el 404 del servidor antes de cargar React. Conserva la resolución normal de archivos estáticos y audio. Por ejemplo, en el bloque `server` de Nginx que sirve `dist/`:
+La compilación se genera en `dist/`. Vite sirve las rutas directamente en desarrollo y preview.
+
+### Vercel
+
+El archivo `vercel.json`, ubicado junto a `package.json`, configura Vite, `npm run build`, la salida `dist` y una reescritura de `/(.*)` a `/index.html`, según la [documentación oficial de Vercel para Vite SPA](https://vercel.com/docs/frameworks/frontend/vite#using-vite-to-make-spas). Los archivos estáticos existentes (JavaScript, CSS, fotos y audio) tienen prioridad sobre la reescritura.
+
+La URL del navegador se conserva: al abrir o recargar `/1`–`/6`, React obtiene la cantidad desde esa ruta. Al abrir `/7` o `/no-existe`, la aplicación muestra `NotFoundPage`, en lugar del error de Vercel. Los parámetros como `?invitado=Ana` también se conservan.
+
+Incluye `vercel.json` en el repositorio y crea un nuevo despliegue que contenga ese cambio. En Vercel, `Root Directory` debe apuntar a la carpeta que contiene `package.json` y `vercel.json`, no a `dist`. Tras desplegar, verifica acceso directo y recarga en `/1`, `/6` y `/no-existe`, además de `/audio/musica.mp3`. La configuración local no modifica un despliegue ya publicado.
+
+### Otros alojamientos
+
+Configura el alojamiento para servir `index.html` en las rutas de la aplicación; de lo contrario, abrir o recargar `/4` podría devolver el 404 del servidor antes de cargar React. Conserva la resolución normal de archivos estáticos y audio. Por ejemplo, en el bloque `server` de Nginx que sirve `dist/`:
 
 ```nginx
 location / {
@@ -143,6 +155,6 @@ location / {
 }
 ```
 
-En alojamientos con archivo `_redirects` (como Netlify), la regla equivalente es `/* /index.html 200`; en otros proveedores, usa su configuración de reescrituras para SPA. `NotFoundPage` muestra el error dentro de la aplicación; el código HTTP lo determina el servidor. No se ha desplegado a un servicio externo.
+En alojamientos con archivo `_redirects` (como Netlify), la regla equivalente es `/* /index.html 200`; en otros proveedores, usa su configuración de reescrituras para SPA. `NotFoundPage` muestra el error dentro de la aplicación; la reescritura sirve el HTML con código HTTP 200 y no equivale a un 404 HTTP del servidor.
 
 Las referencias originales no pudieron abrirse con las herramientas disponibles durante la implementación. El diseño sigue el contenido y la arquitectura especificados en el encargo.
