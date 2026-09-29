@@ -915,8 +915,14 @@ svg {
   display: block;
   color: var(--gold-text);
 }
-.rsvp-personal strong {
-  font-weight: 500;
+.rsvp-personal .rsvp-guest-count {
+  color: var(--color-graphite);
+  font-family: var(--font-sans);
+  font-size: 0.8em;
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+  letter-spacing: 0;
 }
 .rsvp-personal small {
   display: block;

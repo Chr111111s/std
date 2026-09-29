@@ -51,7 +51,7 @@ function RsvpForm({ guest, passes }: { guest: string; passes: number }) {
             </>
           ) : null}
           Esta invitación es para{' '}
-          <strong>
+          <strong className="rsvp-guest-count">
             {passes} {passes === 1 ? 'invitado' : 'invitados'}
           </strong>
           .
