@@ -4,7 +4,7 @@
   display: grid;
   min-height: max(690px, calc(100svh - 78px));
   overflow: hidden;
-  background: #d6d9cd;
+  background: #dfd2b9;
 }
 
 .hero-cover-background {
@@ -46,9 +46,9 @@
 }
 
 .cover-copy > .eyebrow {
-  font-size: 8px;
+  font-size: 0.875rem;
   letter-spacing: 0.17em;
-  color: var(--deep-green);
+  color: var(--gold-text);
 }
 
 .cover-names {
@@ -67,14 +67,14 @@
 .cover-ampersand {
   font-style: italic;
   font-size: 0.62em;
-  color: var(--gold-ink);
+  color: var(--gold-display);
 }
 
 .cover-subtitle {
   font-family: var(--font-serif);
   font-style: italic;
   font-size: 23px;
-  color: var(--deep-green);
+  color: var(--gold-text);
   margin-top: 24px;
 }
 
@@ -84,9 +84,9 @@
   justify-content: center;
   gap: 12px;
   margin: 23px 0;
-  font-size: 10px;
+  font-size: 0.875rem;
   letter-spacing: 0.17em;
-  color: var(--deep-green);
+  color: var(--gold-text);
 }
 
 .cover-date > span {
@@ -131,7 +131,7 @@
 .blessing-signature {
   font-family: var(--font-serif);
   font-size: 21px;
-  color: var(--color-eucalyptus);
+  color: var(--color-gold);
 }
 
 .blessing-signature em {
@@ -172,7 +172,7 @@
   }
 
   .cover-copy > .eyebrow {
-    font-size: 9px;
+    font-size: 0.875rem;
   }
 
   .cover-names {
@@ -191,7 +191,7 @@
   .cover-date {
     justify-content: flex-start;
     margin-block: 30px;
-    font-size: 11px;
+    font-size: 0.875rem;
   }
 
   .hero-dedication {

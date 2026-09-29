@@ -1,6 +1,5 @@
-import { useMemo, useState, type FormEvent } from 'react'
+import { useState, type FormEvent } from 'react'
 import { wedding } from '@/data/wedding'
-import { useInvitation } from '@/hooks/useInvitation'
 import {
   buildWhatsAppUrl,
   type Attendance,
@@ -9,19 +8,13 @@ import {
 import { Icon } from './ui/Icon'
 import { Reveal } from './ui/Reveal'
 
-function RsvpForm({ invitation }: { invitation: Invitation }) {
-  const [name, setName] = useState(invitation.guest)
+function RsvpForm({ guest, passes }: { guest: string; passes: number }) {
+  const [name, setName] = useState(guest)
   const [attendance, setAttendance] = useState<Attendance>('yes')
-  const [guests, setGuests] = useState('1')
   const [phone, setPhone] = useState<string>(wedding.contacts[0].phone)
   const [note, setNote] = useState('')
   const [prepared, setPrepared] = useState(false)
   const [error, setError] = useState('')
-  const options = useMemo(
-    () =>
-      Array.from({ length: invitation.passes ?? 0 }, (_, index) => index + 1),
-    [invitation.passes],
-  )
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setError('')
@@ -30,8 +23,7 @@ function RsvpForm({ invitation }: { invitation: Invitation }) {
         phone,
         name,
         attendance,
-        guests: Number(guests),
-        reserved: invitation.passes,
+        reserved: passes,
         note,
       })
       window.open(url, '_blank', 'noopener,noreferrer')
@@ -53,30 +45,21 @@ function RsvpForm({ invitation }: { invitation: Invitation }) {
       <div className="rsvp-personal">
         <Icon name="rings" />
         <p>
-          {invitation.guest ? (
+          {guest ? (
             <>
-              <span>{invitation.guest},</span>{' '}
+              <span>{guest},</span>{' '}
             </>
           ) : null}
-          {invitation.passes ? (
-            <>
-              hemos reservado{' '}
-              <strong>
-                {invitation.passes}{' '}
-                {invitation.passes === 1
-                  ? 'lugar para ti'
-                  : 'lugares para ustedes'}
-                .
-              </strong>
-            </>
-          ) : (
-            'nos hará muy felices compartir este día contigo.'
-          )}
+          Esta invitación es para{' '}
+          <strong>
+            {passes} {passes === 1 ? 'invitado' : 'invitados'}
+          </strong>
+          .
         </p>
         <small>
-          {invitation.passes
-            ? 'Esta invitación está pensada especialmente para ustedes.'
-            : 'Cuéntanos quién nos acompaña. Confirmaremos contigo la disponibilidad de lugares.'}
+          {passes === 1
+            ? 'Hemos reservado un lugar especialmente para ti.'
+            : 'Tu confirmación incluye todos los lugares reservados para ustedes.'}
         </small>
       </div>
       <label className="field">
@@ -119,51 +102,20 @@ function RsvpForm({ invitation }: { invitation: Invitation }) {
           </label>
         </div>
       </fieldset>
-      <div className="form-row">
-        {attendance === 'yes' ? (
-          <label className="field">
-            Personas que asistirán
-            {invitation.passes ? (
-              <select
-                name="guests"
-                value={guests}
-                onChange={(event) => setGuests(event.target.value)}
-              >
-                {options.map((number) => (
-                  <option key={number} value={number}>
-                    {number} {number === 1 ? 'persona' : 'personas'}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <input
-                name="guests"
-                type="number"
-                min="1"
-                max="100"
-                step="1"
-                value={guests}
-                onChange={(event) => setGuests(event.target.value)}
-                required
-              />
-            )}
-          </label>
-        ) : null}
-        <label className="field">
-          Enviar confirmación a
-          <select
-            name="contact"
-            value={phone}
-            onChange={(event) => setPhone(event.target.value)}
-          >
-            {wedding.contacts.map((contact) => (
-              <option key={contact.phone} value={contact.phone}>
-                {contact.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      <label className="field">
+        Enviar confirmación a
+        <select
+          name="contact"
+          value={phone}
+          onChange={(event) => setPhone(event.target.value)}
+        >
+          {wedding.contacts.map((contact) => (
+            <option key={contact.phone} value={contact.phone}>
+              {contact.label}
+            </option>
+          ))}
+        </select>
+      </label>
       <label className="field">
         Un mensaje para los novios <span className="optional">(opcional)</span>
         <textarea
@@ -188,8 +140,7 @@ function RsvpForm({ invitation }: { invitation: Invitation }) {
   )
 }
 
-export function RsvpSection() {
-  const invitation = useInvitation()
+export function RsvpSection({ invitation }: { invitation: Invitation }) {
   return (
     <section
       id="confirmar"
@@ -231,10 +182,23 @@ export function RsvpSection() {
           </div>
         </Reveal>
         <Reveal>
-          <RsvpForm
-            key={`${invitation.guest}:${invitation.passes}`}
-            invitation={invitation}
-          />
+          {invitation.passes ? (
+            <RsvpForm
+              key={`${invitation.guest}:${invitation.passes}`}
+              guest={invitation.guest}
+              passes={invitation.passes}
+            />
+          ) : (
+            <div className="rsvp-form rsvp-personal">
+              <Icon name="rings" />
+              <p>Tu invitación tiene un lugar especial.</p>
+              <small>
+                Abre el enlace personal que te compartimos para confirmar tu
+                asistencia. Si no lo tienes a mano, escríbenos a cualquiera de
+                nuestros contactos.
+              </small>
+            </div>
+          )}
         </Reveal>
       </div>
     </section>

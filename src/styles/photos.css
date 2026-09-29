@@ -24,12 +24,12 @@
   padding: 10px;
   border: 1px solid #dcd6c4;
   background: #fffcf5;
-  box-shadow: 0 12px 30px #40594e0a;
+  box-shadow: 0 12px 30px #8f7e580a;
 }
 
 .story-section figcaption {
   color: var(--gold-ink);
-  font-size: 8px;
+  font-size: 0.875rem;
   letter-spacing: 0.16em;
   line-height: 1.7;
   text-align: center;
@@ -55,7 +55,7 @@
 }
 
 .story-announcement figcaption {
-  font-size: 7px;
+  font-size: 0.875rem;
 }
 
 .story-gallery-heading {
@@ -69,14 +69,14 @@
 }
 
 .story-gallery-heading .eyebrow {
-  font-size: 9px;
+  font-size: 0.875rem;
 }
 
 .story-gallery-heading > span {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 
@@ -94,7 +94,7 @@
   overscroll-behavior-x: contain;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: #a8b09b transparent;
+  scrollbar-color: #aa8d53 transparent;
   padding-block: 10px 18px;
 }
 

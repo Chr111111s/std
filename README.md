@@ -15,7 +15,7 @@ Abre la URL que indica Vite. Si ya están instaladas las dependencias, basta con
 
 ```text
 src/
-  App.tsx                         Composición y navegación por anclas
+  App.tsx                         Resolución de rutas y composición de la invitación
   index.css                       Tokens Tailwind, composición y responsive
   styles/photos.css               Composición de retratos y galería responsive
   styles/hero.css                 Portada fotográfica de ancho completo y dedicatoria
@@ -24,7 +24,8 @@ src/
     photos.ts                     Fotografías y textos alternativos
     photos.generated.json         Rutas, dimensiones y variantes optimizadas
   components/
-    AudioPlayer.tsx                Control flotante; audio opcional
+    AudioPlayer.tsx                Autoplay, recuperación por interacción y pausa
+    NotFoundPage.tsx               Página 404 con regreso al inicio
     HeroSection.tsx                Portada editorial y monograma botánico
     CountdownTimer.tsx             Cuenta regresiva con limpieza de temporizador
     ParentsGodparentsSection.tsx   Padres y padrinos
@@ -40,7 +41,7 @@ src/
       Icon.tsx                    Iconos SVG sin dependencias
       Reveal.tsx                  Aparición al hacer scroll
   hooks/
-    useInvitation.ts              Parámetros de URL y cambios de historial
+    useInvitation.ts              Ruta dinámica, nombre y cambios de historial
     useCopyToClipboard.ts         Copia, feedback y manejo de errores
   lib/
     invitation.ts                 Parser, mensaje de WhatsApp y cálculo de tiempo
@@ -53,11 +54,11 @@ Los componentes visuales están separados de los datos y de las funciones puras 
 
 ## Dirección de diseño
 
-- Marfil `#FDFBF7`, champagne `#D4AF37`, eucalipto `#5A7065` y grafito `#2C2C2C`. El verde profundo `#40594E` se usa en botones y en la sección de vestimenta; el oro oscuro `#8B753D` mejora la legibilidad de los acentos sobre marfil.
+- Marfil `#FDFBF7`, champán `#F0E6D4`, oro suave `#BDA777`, acentos de títulos `#9A8255`, tinta dorada `#756341` y grafito `#2C2C2C`. Los botones usan champán `#E5D5B6` con texto `#433D32`; vestimenta tiene un fondo claro `#EFE5D1`. La paleta evita grandes superficies marrón oscuro y dorados amarillos brillantes. Fondos, ilustraciones, sellos, estados de formulario y favicon siguen la misma dirección.
 - Cormorant Garamond para nombres y títulos; Montserrat para información y controles. Las fuentes se cargan mediante Google Fonts, con alternativas locales si no hay conexión.
 - Elemento distintivo: tarjeta inclinada de papelería, monograma V/E, ramas de eucalipto dibujadas en SVG y sello con anillos. No usa fotografías genéricas, emojis ni paquetes de iconos.
-- Secciones con ritmos diferentes: portada asimétrica, familias simétricas, tarjetas de ubicaciones, itinerario vertical, vestimenta sobre verde y RSVP en papel.
-- Adaptación hasta 320 px, campos móviles de 16 px para evitar zoom al enfocarlos, controles táctiles y enlaces por anclas.
+- Secciones con ritmos diferentes: portada asimétrica, familias simétricas, tarjetas de ubicaciones, itinerario vertical, vestimenta sobre champán y RSVP en papel claro.
+- Base de 16 px, textos auxiliares de al menos 14 px y campos de 16 px también en escritorio. Rejillas, botones y navegación ajustados para esos tamaños, con reglas responsive hasta 320 px.
 - Foco visible, enlace para saltar al contenido, etiquetas de formulario, mensajes de estado, SVG decorativos ocultos a lectores de pantalla y respeto a `prefers-reduced-motion`.
 - Las animaciones usan CSS e IntersectionObserver. No se requiere Framer Motion.
 
@@ -74,7 +75,7 @@ La tarjeta de la ceremonia utiliza `iglesia.jpg`. La del salón conserva su ilus
 ## Invitaciones personalizadas
 
 ```text
-http://localhost:5173/?invitado=Familia+P%C3%A9rez&pases=4
+http://localhost:5173/4?invitado=Familia+P%C3%A9rez#confirmar
 ```
 
 `useInvitation()` utiliza `parseInvitation()` para devolver:
@@ -83,15 +84,17 @@ http://localhost:5173/?invitado=Familia+P%C3%A9rez&pases=4
 { guest: 'Familia Pérez', passes: 4 }
 ```
 
-El RSVP muestra “Familia Pérez, hemos reservado 4 lugares para ustedes” y permite elegir entre 1 y 4 asistentes. Sin parámetros se muestra una invitación genérica; la disponibilidad se consulta con los novios, sin inventar una reserva.
+Las rutas `/1`, `/2`, `/3`, `/4`, `/5` y `/6` comparten el mismo componente. `/1` muestra “1 invitado”; las demás, “X invitados”. Se acepta una barra final opcional. El formulario confirma todos los lugares de la ruta y no ofrece ningún selector ni campo de cantidad.
 
-Los pases deben ser enteros entre 1 y 100. Ceros, negativos, decimales, valores no numéricos o excesivos se tratan como ausencia de pases. Los nombres se recortan a 120 caracteres y React los presenta como texto.
+`/` conserva la invitación general y los contactos, sin asignar pases ni mostrar un formulario de confirmación. Las demás rutas, incluidos `/0`, `/7`, `/01` o `/2/otra`, muestran `NotFoundPage`. El parámetro antiguo `?pases=` se ignora: actualiza los enlaces que hayas compartido. `?invitado=` sigue siendo opcional; los nombres se recortan a 120 caracteres y React los presenta como texto.
 
-Los parámetros personalizan la presentación; son editables por el visitante. Si se necesita validar invitaciones reales, habrá que añadir un servidor con identificadores de invitación.
+La ubicación se observa una sola vez con `useSyncExternalStore`; el parser se vuelve a ejecutar únicamente al cambiar ruta o consulta. Los campos mantienen su estado dentro de `RsvpForm`, sin renderizar las demás secciones al escribir. La cuenta regresiva y el audio también mantienen su estado local. No se añade una dependencia de enrutamiento para estas seis rutas.
+
+Las rutas personalizan la presentación; son editables por el visitante. Si se necesita validar invitaciones reales, habrá que añadir un servidor con identificadores de invitación.
 
 ## WhatsApp
 
-El formulario permite asistir o declinar, elegir uno de los dos contactos, indicar asistentes y añadir un mensaje. `buildWhatsAppUrl()` valida los datos y genera un enlace `https://wa.me/...` con el texto codificado mediante `encodeURIComponent`.
+El formulario permite asistir o declinar, elegir uno de los dos contactos y añadir un mensaje. `buildWhatsAppUrl()` recibe una única cantidad reservada, valida que esté entre 1 y 6 y genera un enlace `https://wa.me/...` con el texto codificado mediante `encodeURIComponent`. No recibe una cantidad de asistentes separada que pueda discrepar de la ruta.
 
 Los teléfonos están en formato internacional de México (`52` + 10 dígitos). La interfaz **prepara el mensaje**: el invitado debe enviarlo desde WhatsApp. No almacena respuestas ni afirma que se hayan recibido. No hay backend.
 
@@ -101,17 +104,19 @@ La cuenta regresiva utiliza `2026-12-05T14:00:00-06:00`, tomando Ciudad de Méxi
 
 Se actualiza cada segundo, se sincroniza al volver a la pestaña y se detiene visualmente en cero después de la fecha. La finalización a la 01:00 AM está indicada como domingo 6 de diciembre.
 
-## Música opcional
+## Música de fondo
 
-Sin archivo de audio, el control discreto abre la información de “Dandelions — Ruth B” y un enlace para escucharla en Spotify. No intenta reproducir un archivo inexistente.
+`public/audio/musica.mp3` contiene una copia del audio MPEG/MP3 proporcionado en `resources/musica.mpeg`; el original se conserva. Se sirve como archivo estático, separado del JavaScript, y se utiliza por defecto sin configurar variables de entorno.
 
-Para incorporar audio más adelante, copia `.env.example` a `.env.local` y configura:
+Para sustituir el audio, copia `.env.example` a `.env.local` y configura:
 
 ```dotenv
-VITE_WEDDING_AUDIO_URL=/audio/dandelions.mp3
+VITE_WEDDING_AUDIO_URL=/audio/musica.mp3
 ```
 
-Coloca tu archivo autorizado en `public/audio/dandelions.mp3` o indica una URL de audio. Reinicia Vite al cambiar el entorno. La reproducción comienza solo al pulsar el control; incluye pausa, onda animada y manejo de errores.
+Puedes indicar otro archivo de `public/audio/` o una URL de audio. Reinicia Vite al cambiar el entorno. Configura `VITE_WEDDING_AUDIO_URL=` vacío para desactivar el audio: el control ofrecerá la información de “Dandelions — Ruth B” y un enlace a Spotify.
+
+Con audio configurado se intenta `play()` al montar, con `autoPlay`, `loop` y `preload="auto"`. Si el navegador responde `NotAllowedError`, se reintenta desde la primera pulsación del ratón, toque o tecla en cualquier parte de la página, sin exigir el botón de música. Los eventos se capturan antes de que otros controles puedan detener su propagación. Un bloqueo de autoplay no se presenta como un fallo del archivo. La interfaz espera a `playing` para indicar que suena y retirar los escuchadores; el evento `play` por sí solo no confirma que haya comenzado el sonido. También se limpian al utilizar el control manual o al desmontar. Una pausa manual no se revierte por futuras interacciones. El audio sin interacción depende de las [políticas de autoplay del navegador](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay); el sitio no puede garantizarlo en la primera visita.
 
 ## Mesa de regalos
 
@@ -130,6 +135,14 @@ El número `60014617` se copia mediante Clipboard API. Se anuncia el éxito y, s
 | `npm.cmd run format`       | Aplicar Prettier                              |
 | `npm.cmd run format:check` | Comprobar el formato                          |
 
-La compilación se genera en `dist/` y puede servirse como sitio estático. No se ha desplegado a un servicio externo.
+La compilación se genera en `dist/`. Vite sirve las rutas directamente en desarrollo y preview. En producción, configura el alojamiento para servir `index.html` en las rutas de la aplicación; de lo contrario, abrir o recargar `/4` podría devolver el 404 del servidor antes de cargar React. Conserva la resolución normal de archivos estáticos y audio. Por ejemplo, en el bloque `server` de Nginx que sirve `dist/`:
+
+```nginx
+location / {
+  try_files $uri $uri/ /index.html;
+}
+```
+
+En alojamientos con archivo `_redirects` (como Netlify), la regla equivalente es `/* /index.html 200`; en otros proveedores, usa su configuración de reescrituras para SPA. `NotFoundPage` muestra el error dentro de la aplicación; el código HTTP lo determina el servidor. No se ha desplegado a un servicio externo.
 
 Las referencias originales no pudieron abrirse con las herramientas disponibles durante la implementación. El diseño sigue el contenido y la arquitectura especificados en el encargo.

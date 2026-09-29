@@ -7,13 +7,13 @@ import {
 
 describe('pases personalizados', () => {
   it('decodifica los nombres y los espacios de la URL', () => {
-    expect(parseInvitation('?invitado=Familia+P%C3%A9rez&pases=4')).toEqual({
+    expect(parseInvitation('/4', '?invitado=Familia+P%C3%A9rez')).toEqual({
       guest: 'Familia Pérez',
       passes: 4,
     })
   })
   it('ofrece una invitación genérica sin parámetros', () => {
-    expect(parseInvitation('')).toEqual({ guest: '', passes: null })
+    expect(parseInvitation('/')).toEqual({ guest: '', passes: null })
   })
   it.each([
     '0',
@@ -22,17 +22,31 @@ describe('pases personalizados', () => {
     'abc',
     '1e2',
     '101',
+    '7',
+    '01',
+    '2/otra',
+    '2//',
+    '%32',
+    'confirmar',
     'Infinity',
     '9007199254740992',
-    '',
   ])('no convierte %s en una reserva', (value) => {
-    expect(parseInvitation(`?pases=${value}`).passes).toBeNull()
+    expect(parseInvitation(`/${value}`)).toBeNull()
+  })
+  it.each([1, 2, 3, 4, 5, 6])('obtiene %i invitados de la ruta', (passes) => {
+    expect(parseInvitation(`/${passes}`, '?pases=100')?.passes).toBe(passes)
+    expect(parseInvitation(`/${passes}/`)?.passes).toBe(passes)
+  })
+  it('ignora el parámetro antiguo de pases en la portada', () => {
+    expect(parseInvitation('/', '?pases=4')?.passes).toBeNull()
   })
   it('limita nombres excesivos y conserva texto como texto', () => {
-    expect(parseInvitation(`?invitado=${'a'.repeat(300)}`).guest).toHaveLength(
-      120,
+    expect(
+      parseInvitation('/1', `?invitado=${'a'.repeat(300)}`)?.guest,
+    ).toHaveLength(120)
+    expect(parseInvitation('/1', '?invitado=%3Cscript%3E')?.guest).toBe(
+      '<script>',
     )
-    expect(parseInvitation('?invitado=%3Cscript%3E').guest).toBe('<script>')
   })
 })
 
@@ -41,7 +55,6 @@ describe('mensaje de WhatsApp', () => {
     phone: '525545623019',
     name: 'Familia Pérez',
     attendance: 'yes' as const,
-    guests: 3,
     reserved: 4,
   }
   it('codifica el mensaje y utiliza el número internacional', () => {
@@ -50,28 +63,31 @@ describe('mensaje de WhatsApp', () => {
     )
     expect(url.origin + url.pathname).toBe('https://wa.me/525545623019')
     expect(url.searchParams.get('text')).toContain(
-      'Asistiremos 3 personas. Tenemos 4 lugares reservados.',
+      'Asistiremos 4 invitados. Tenemos 4 lugares reservados.',
     )
     expect(url.searchParams.get('text')).toContain('Familia Pérez')
     expect(url.searchParams.get('text')).toContain('Gracias & nos vemos')
   })
-  it('no permite confirmar más personas que pases', () => {
-    expect(() => buildWhatsAppUrl({ ...confirmation, guests: 5 })).toThrow()
-    expect(() => buildWhatsAppUrl({ ...confirmation, guests: 0 })).toThrow()
+  it('rechaza reservas fuera de las seis rutas y nombres vacíos', () => {
+    expect(() => buildWhatsAppUrl({ ...confirmation, reserved: 7 })).toThrow()
+    expect(() => buildWhatsAppUrl({ ...confirmation, reserved: 0 })).toThrow()
+    expect(() => buildWhatsAppUrl({ ...confirmation, reserved: 1.5 })).toThrow()
     expect(() => buildWhatsAppUrl({ ...confirmation, name: '  ' })).toThrow()
   })
   it('genera una declinación sin afirmar asistencia', () => {
     const message = new URL(
-      buildWhatsAppUrl({ ...confirmation, attendance: 'no', guests: 0 }),
+      buildWhatsAppUrl({ ...confirmation, attendance: 'no' }),
     ).searchParams.get('text')
     expect(message).toContain('no podremos acompañarlos')
     expect(message).not.toContain('Asistiremos')
   })
-  it('no promete una reserva a una visita sin pases', () => {
+  it('usa el singular para una invitación individual', () => {
     const message = new URL(
-      buildWhatsAppUrl({ ...confirmation, reserved: null }),
+      buildWhatsAppUrl({ ...confirmation, reserved: 1 }),
     ).searchParams.get('text')
-    expect(message).toContain('confírmenos la disponibilidad')
+    expect(message).toContain(
+      'Asistiré como 1 invitado. Tengo 1 lugar reservado.',
+    )
   })
 })
 

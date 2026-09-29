@@ -1,22 +1,19 @@
 export type Invitation = { guest: string; passes: number | null }
 export type Attendance = 'yes' | 'no'
 
-export function parseInvitation(search: string): Invitation {
+export function parseInvitation(
+  pathname: string,
+  search = '',
+): Invitation | null {
+  // Only the six invitation routes (with an optional trailing slash) are valid.
+  const match = /^\/([1-6])\/?$/.exec(pathname)
+  if (pathname !== '/' && !match) return null
   const params = new URLSearchParams(search)
   const guest = (params.get('invitado') ?? '')
     .trim()
     .replace(/\s+/g, ' ')
     .slice(0, 120)
-  const rawPasses = params.get('pases') ?? ''
-  const number = Number(rawPasses)
-  // Invalid values never become a reservation. The limit guards URL abuse.
-  const passes =
-    /^\d+$/.test(rawPasses) &&
-    Number.isSafeInteger(number) &&
-    number >= 1 &&
-    number <= 100
-      ? number
-      : null
+  const passes = match ? Number(match[1]) : null
   return { guest, passes }
 }
 
@@ -24,29 +21,26 @@ export function buildWhatsAppUrl({
   phone,
   name,
   attendance,
-  guests,
   reserved,
   note = '',
 }: {
   phone: string
   name: string
   attendance: Attendance
-  guests: number
-  reserved: number | null
+  reserved: number
   note?: string
 }) {
   if (!/^\d{10,15}$/.test(phone))
     throw new Error('Número de contacto inválido.')
   if (!name.trim()) throw new Error('Escribe tu nombre o el de tu familia.')
-  if (
-    attendance === 'yes' &&
-    (!Number.isInteger(guests) || guests < 1 || guests > (reserved ?? 100))
-  ) {
-    throw new Error('Selecciona un número de asistentes válido.')
+  if (!Number.isInteger(reserved) || reserved < 1 || reserved > 6) {
+    throw new Error('Abre el enlace personal de tu invitación para confirmar.')
   }
   const response =
     attendance === 'yes'
-      ? `Confirmamos nuestra asistencia a su boda el 5 de diciembre de 2026. Asistiremos ${guests} ${guests === 1 ? 'persona' : 'personas'}.${reserved ? ` Tenemos ${reserved} ${reserved === 1 ? 'lugar reservado' : 'lugares reservados'}.` : ' Por favor, confírmenos la disponibilidad de lugares.'}`
+      ? reserved === 1
+        ? 'Confirmo mi asistencia a su boda el 5 de diciembre de 2026. Asistiré como 1 invitado. Tengo 1 lugar reservado.'
+        : `Confirmamos nuestra asistencia a su boda el 5 de diciembre de 2026. Asistiremos ${reserved} invitados. Tenemos ${reserved} lugares reservados.`
       : 'Gracias por invitarnos a su boda el 5 de diciembre de 2026. Lamentablemente no podremos acompañarlos.'
   const message = `Hola, Valeria y Eduardo. Soy ${name.trim()}.\n${response}${note.trim() ? `\nNota: ${note.trim()}` : ''}`
   return `https://wa.me/${phone}?text=${encodeURIComponent(message)}`

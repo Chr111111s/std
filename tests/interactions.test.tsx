@@ -1,6 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { StrictMode } from 'react'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { RsvpSection } from '../src/components/RsvpSection'
 import { GiftRegistrySection } from '../src/components/GiftRegistrySection'
 import { CountdownTimer } from '../src/components/CountdownTimer'
@@ -14,18 +15,19 @@ afterEach(() => {
 })
 
 describe('RSVP', () => {
-  it('personaliza el formulario, limita asistentes y abre el mensaje correcto', async () => {
-    window.history.replaceState({}, '', '/?invitado=Familia+P%C3%A9rez&pases=4')
+  it('personaliza el formulario y confirma la cantidad de la ruta', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/4?invitado=Familia+P%C3%A9rez&pases=1',
+    )
     const open = vi.spyOn(window, 'open').mockReturnValue(null)
     const user = userEvent.setup()
-    render(<RsvpSection />)
+    render(<App />)
     expect(screen.getByText('Familia Pérez,')).toBeTruthy()
-    expect(screen.getByText('4 lugares para ustedes.')).toBeTruthy()
-    const guests = screen.getByLabelText(
-      'Personas que asistirán',
-    ) as HTMLSelectElement
-    expect(guests.options).toHaveLength(4)
-    await user.selectOptions(guests, '3')
+    expect(screen.getByText('4 invitados')).toBeTruthy()
+    expect(screen.queryByLabelText('Personas que asistirán')).toBeNull()
+    expect(screen.queryByRole('spinbutton')).toBeNull()
     await user.selectOptions(
       screen.getByLabelText('Enviar confirmación a'),
       '525585730063',
@@ -36,15 +38,15 @@ describe('RSVP', () => {
     expect(open).toHaveBeenCalledOnce()
     const url = new URL(open.mock.calls[0][0] as string)
     expect(url.pathname).toBe('/525585730063')
-    expect(url.searchParams.get('text')).toContain('Asistiremos 3 personas')
-    expect(screen.getByRole('status').textContent).toContain(
-      'Envíalo desde WhatsApp',
-    )
+    expect(url.searchParams.get('text')).toContain('Asistiremos 4 invitados')
+    expect(
+      screen.getByText(/Mensaje preparado. Envíalo desde WhatsApp/),
+    ).toBeTruthy()
   })
   it('permite declinar sin pedir un número de asistentes', async () => {
     const user = userEvent.setup()
     const open = vi.spyOn(window, 'open').mockReturnValue(null)
-    render(<RsvpSection />)
+    render(<RsvpSection invitation={{ guest: '', passes: 2 }} />)
     await user.type(
       screen.getByLabelText('Tu nombre o el de tu familia'),
       'Ana',
@@ -60,19 +62,22 @@ describe('RSVP', () => {
   })
   it('no afirma una reserva sin un parámetro válido', () => {
     window.history.replaceState({}, '', '/?pases=-2')
-    render(<RsvpSection />)
+    render(<App />)
     expect(screen.queryByText(/hemos reservado/)).toBeNull()
     expect(
-      screen.getByLabelText('Personas que asistirán').getAttribute('min'),
-    ).toBe('1')
+      screen.queryByRole('button', { name: /Continuar en WhatsApp/ }),
+    ).toBeNull()
+    expect(screen.getByText(/Abre el enlace personal/)).toBeTruthy()
   })
   it('actualiza la invitación cuando cambia el historial', () => {
-    render(<RsvpSection />)
+    window.history.replaceState({}, '', '/1?invitado=Luis')
+    render(<App />)
     act(() => {
-      window.history.pushState({}, '', '/?invitado=Ana&pases=2')
+      window.history.pushState({}, '', '/2?invitado=Ana')
       window.dispatchEvent(new PopStateEvent('popstate'))
     })
     expect(screen.getByText('Ana,')).toBeTruthy()
+    expect(screen.getByText('2 invitados')).toBeTruthy()
     expect(
       (
         screen.getByLabelText(
@@ -80,6 +85,51 @@ describe('RSVP', () => {
         ) as HTMLInputElement
       ).value,
     ).toBe('Ana')
+  })
+  it.each([1, 2, 3, 4, 5, 6])(
+    'adapta la ruta /%i sin selectores de cantidad',
+    (passes) => {
+      window.history.replaceState({}, '', `/${passes}`)
+      const { container } = render(<App />)
+      expect(
+        screen.getByText(
+          `${passes} ${passes === 1 ? 'invitado' : 'invitados'}`,
+        ),
+      ).toBeTruthy()
+      expect(container.querySelector('[name="guests"]')).toBeNull()
+    },
+  )
+})
+
+describe('rutas desconocidas', () => {
+  it.each(['/7', '/0', '/01', '/2/otra', '/no-existe'])(
+    'muestra 404 en %s',
+    (path) => {
+      window.history.replaceState({}, '', path)
+      render(<App />)
+      expect(screen.getByRole('heading', { level: 1 }).textContent).toBe(
+        'Este enlace no está disponible.',
+      )
+      expect(
+        screen
+          .getByRole('link', { name: 'Volver al inicio' })
+          .getAttribute('href'),
+      ).toBe('/')
+      expect(
+        screen.queryByRole('button', { name: /Continuar en WhatsApp/ }),
+      ).toBeNull()
+      expect(screen.queryByLabelText('Nuestra canción')).toBeNull()
+    },
+  )
+  it('recupera una invitación válida al volver en el historial', () => {
+    window.history.replaceState({}, '', '/no-existe')
+    render(<App />)
+    act(() => {
+      window.history.replaceState({}, '', '/6')
+      window.dispatchEvent(new PopStateEvent('popstate'))
+    })
+    expect(screen.getByText('6 invitados')).toBeTruthy()
+    expect(document.title).not.toContain('Página no encontrada')
   })
 })
 
@@ -112,6 +162,13 @@ describe('copiar evento', () => {
 })
 
 describe('contador y audio', () => {
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(
+      function () {
+        this.dispatchEvent(new Event('pause'))
+      },
+    )
+  })
   it('termina en cero y limpia el temporizador al desmontarse', () => {
     vi.useFakeTimers()
     vi.setSystemTime(new Date('2026-12-05T19:59:59Z'))
@@ -139,12 +196,9 @@ describe('contador y audio', () => {
   })
   it('maneja un fallo de reproducción sin dejar el control bloqueado', async () => {
     vi.spyOn(HTMLMediaElement.prototype, 'play').mockRejectedValue(
-      new Error('NotAllowedError'),
+      new DOMException('Formato no soportado', 'NotSupportedError'),
     )
     render(<AudioPlayer src="/audio/sample.mp3" />)
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Reproducir Dandelions' }),
-    )
     await waitFor(() =>
       expect(screen.getByRole('status').textContent).toContain(
         'No se pudo reproducir',
@@ -157,6 +211,158 @@ describe('contador y audio', () => {
         }) as HTMLButtonElement
       ).disabled,
     ).toBe(false)
+  })
+  it('intenta reproducir al montar y refleja la reproducción real', async () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockImplementation(function () {
+        this.dispatchEvent(new Event('playing'))
+        return Promise.resolve()
+      })
+    render(<AudioPlayer src="/audio/sample.mp3" />)
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Pausar Dandelions' }),
+      ).toBeTruthy(),
+    )
+    expect(play).toHaveBeenCalledOnce()
+    fireEvent.click(document.body)
+    expect(play).toHaveBeenCalledOnce()
+  })
+  it.each(['click', 'keydown', 'touchend', 'pointerdown', 'pointerup'])(
+    'reintenta tras %s si el navegador bloquea el autoplay',
+    async (event) => {
+      const play = vi
+        .spyOn(HTMLMediaElement.prototype, 'play')
+        .mockRejectedValueOnce(
+          new DOMException('Interacción necesaria', 'NotAllowedError'),
+        )
+        .mockImplementation(function () {
+          this.dispatchEvent(new Event('playing'))
+          return Promise.resolve()
+        })
+      render(<AudioPlayer src="/audio/sample.mp3" />)
+      await act(async () => {})
+      expect(screen.queryByText('No se pudo reproducir la canción.')).toBeNull()
+      fireEvent(
+        document.body,
+        event === 'keydown'
+          ? new KeyboardEvent(event, { key: 'Enter', bubbles: true })
+          : Object.assign(new Event(event, { bubbles: true }), {
+              pointerType: event === 'pointerdown' ? 'mouse' : 'touch',
+            }),
+      )
+      await waitFor(() =>
+        expect(
+          screen.getByRole('button', { name: 'Pausar Dandelions' }),
+        ).toBeTruthy(),
+      )
+      expect(play).toHaveBeenCalledTimes(2)
+      fireEvent.click(screen.getByRole('button', { name: 'Pausar Dandelions' }))
+      fireEvent.click(document.body)
+      expect(play).toHaveBeenCalledTimes(2)
+      expect(
+        screen.getByRole('button', { name: 'Reproducir Dandelions' }),
+      ).toBeTruthy()
+    },
+  )
+  it('mantiene el inicio por interacción si play se interrumpe antes de sonar', async () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockImplementationOnce(function () {
+        this.dispatchEvent(new Event('play'))
+        return Promise.reject(
+          new DOMException('Inicio interrumpido', 'AbortError'),
+        )
+      })
+      .mockImplementation(function () {
+        this.dispatchEvent(new Event('playing'))
+        return Promise.resolve()
+      })
+    render(<AudioPlayer src="/audio/sample.mp3" />)
+    await act(async () => {})
+    expect(
+      screen.queryByRole('button', { name: 'Pausar Dandelions' }),
+    ).toBeNull()
+    fireEvent.click(document.body)
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Pausar Dandelions' }),
+      ).toBeTruthy(),
+    )
+    expect(play).toHaveBeenCalledTimes(2)
+  })
+  it('inicia desde un toque en otro control aunque este detenga la propagación', async () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockRejectedValueOnce(new DOMException('Bloqueado', 'NotAllowedError'))
+      .mockImplementation(function () {
+        this.dispatchEvent(new Event('playing'))
+        return Promise.resolve()
+      })
+    render(
+      <>
+        <button onClick={(event) => event.stopPropagation()}>
+          Ver invitación
+        </button>
+        <AudioPlayer src="/audio/sample.mp3" />
+      </>,
+    )
+    await act(async () => {})
+    fireEvent.click(screen.getByRole('button', { name: 'Ver invitación' }))
+    await waitFor(() =>
+      expect(
+        screen.getByRole('button', { name: 'Pausar Dandelions' }),
+      ).toBeTruthy(),
+    )
+    expect(play).toHaveBeenCalledTimes(2)
+  })
+  it('el control manual reproduce una sola vez y permite pausar', async () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockRejectedValueOnce(new DOMException('Bloqueado', 'NotAllowedError'))
+      .mockImplementation(function () {
+        this.dispatchEvent(new Event('playing'))
+        return Promise.resolve()
+      })
+    render(<AudioPlayer src="/audio/sample.mp3" />)
+    await act(async () => {})
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Reproducir Dandelions' }),
+    )
+    await waitFor(() => expect(play).toHaveBeenCalledTimes(2))
+    await waitFor(() =>
+      expect(
+        (
+          screen.getByRole('button', {
+            name: 'Pausar Dandelions',
+          }) as HTMLButtonElement
+        ).disabled,
+      ).toBe(false),
+    )
+    fireEvent.click(screen.getByRole('button', { name: 'Pausar Dandelions' }))
+    fireEvent.click(document.body)
+    expect(play).toHaveBeenCalledTimes(2)
+  })
+  it('limpia los eventos incluso con StrictMode y promesas pendientes al desmontar', async () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockRejectedValue(new DOMException('Bloqueado', 'NotAllowedError'))
+    const { unmount } = render(
+      <StrictMode>
+        <AudioPlayer src="/audio/sample.mp3" />
+      </StrictMode>,
+    )
+    unmount()
+    await act(async () => {})
+    const attempts = play.mock.calls.length
+    fireEvent.click(document.body)
+    fireEvent.keyDown(document.body, { key: 'Enter' })
+    fireEvent.touchEnd(document.body)
+    fireEvent.pointerDown(document.body, { pointerType: 'mouse' })
+    fireEvent.pointerUp(document.body, { pointerType: 'touch' })
+    expect(play).toHaveBeenCalledTimes(attempts)
+    expect(HTMLMediaElement.prototype.pause).toHaveBeenCalled()
   })
 })
 

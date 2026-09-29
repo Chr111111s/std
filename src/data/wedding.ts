@@ -90,6 +90,6 @@ export const wedding = {
   audio: {
     title: 'Dandelions',
     artist: 'Ruth B',
-    src: import.meta.env.VITE_WEDDING_AUDIO_URL || '',
+    src: import.meta.env.VITE_WEDDING_AUDIO_URL ?? '/audio/musica.mp3',
   },
 } as const

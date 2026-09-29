@@ -5,21 +5,29 @@
   --font-sans: 'Montserrat', Arial, sans-serif;
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --color-ivory: #fdfbf7;
-  --color-champagne: #d4af37;
-  --color-eucalyptus: #5a7065;
+  --color-champagne: #f0e6d4;
+  --color-gold-detail: #bda777;
+  --color-gold: #756341;
   --color-graphite: #2c2c2c;
 }
 
 :root {
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
   color: var(--color-graphite);
   background: var(--color-ivory);
   font-synthesis: none;
-  --muted: #73736a;
+  --muted: #6f6555;
   --paper: #f2efe7;
-  --rule: #deddd3;
-  --gold-ink: #8b753d;
-  --deep-green: #40594e;
+  --rule: #ded3bd;
+  --gold-ink: var(--color-gold);
+  --gold-text: var(--color-gold);
+  --gold-display: #9a8255;
+  --gold-button: #e5d5b6;
+  --gold-button-hover: #d8c39d;
+  --gold-button-text: #433d32;
+  --champagne-panel: #efe5d1;
 }
 * {
   box-sizing: border-box;
@@ -34,7 +42,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 ::selection {
-  background: #dce3d7;
+  background: var(--color-champagne);
   color: #2c2c2c;
 }
 button,
@@ -91,12 +99,12 @@ svg {
   padding-block: 110px;
 }
 .eyebrow {
-  font-size: 10px;
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.7;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--color-eucalyptus);
+  color: var(--color-gold);
 }
 .section-title {
   margin-top: 18px;
@@ -106,12 +114,12 @@ svg {
   letter-spacing: -0.025em;
 }
 .section-title em {
-  color: var(--color-eucalyptus);
+  color: var(--gold-display);
   font-weight: 400;
 }
 .section-intro {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 1rem;
   line-height: 2;
   margin-top: 25px;
 }
@@ -124,12 +132,12 @@ svg {
 }
 .button {
   min-height: 49px;
-  padding: 15px 23px;
+  padding: 15px 18px;
   display: inline-flex;
-  gap: 18px;
+  gap: 10px;
   justify-content: center;
   align-items: center;
-  font-size: 11px;
+  font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.07em;
   border: 1px solid transparent;
@@ -147,30 +155,31 @@ svg {
   transform: translateY(-2px);
 }
 .button-primary {
-  background: var(--deep-green);
-  color: #fdfbf7;
+  background: var(--gold-button);
+  border-color: var(--color-gold-detail);
+  color: var(--gold-button-text);
 }
 .button-primary:hover {
-  background: #2f473c;
-  box-shadow: 0 5px 20px #40594e18;
+  background: var(--gold-button-hover);
+  box-shadow: 0 5px 20px #8f7e5814;
 }
 .button-outline {
-  border-color: #bfbea9;
+  border-color: #9b865e;
   background: transparent;
-  color: var(--deep-green);
+  color: var(--gold-text);
 }
 .button-outline:hover {
-  background: #f0f1e9;
+  background: #f3ead9;
 }
 .text-link {
   display: inline-flex;
   gap: 9px;
   align-items: center;
-  color: var(--deep-green);
-  font-size: 11px;
+  color: var(--gold-text);
+  font-size: 0.875rem;
   font-weight: 500;
   padding-block: 12px;
-  border-bottom: 1px solid #bcc4b7;
+  border-bottom: 1px solid #bba477;
 }
 .text-link svg {
   width: 15px;
@@ -190,8 +199,8 @@ svg {
   transform: translateY(-150%);
   z-index: 100;
   padding: 12px 18px;
-  background: var(--deep-green);
-  color: white;
+  background: var(--gold-button);
+  color: var(--gold-button-text);
 }
 .skip-link:focus {
   transform: translateY(0);
@@ -227,15 +236,15 @@ svg {
   gap: 15px;
   align-items: center;
   min-height: 44px;
-  font-size: 11px;
+  font-size: 0.875rem;
   transition: color 0.2s;
 }
 .site-header nav a:hover {
   color: var(--gold-ink);
 }
 .nav-rsvp {
-  border-bottom: 1px solid var(--color-eucalyptus);
-  color: var(--deep-green);
+  border-bottom: 1px solid var(--color-gold);
+  color: var(--gold-text);
   font-weight: 500;
 }
 
@@ -253,7 +262,7 @@ svg {
   content: '';
   position: absolute;
   inset: 26px -3% -2px 11%;
-  background: #edece2;
+  background: #eee4d1;
   border-radius: 47% 47% 0 0;
 }
 .invitation-paper {
@@ -261,8 +270,8 @@ svg {
   inset: 28px 30px 12px 37px;
   background: #fffcf5;
   box-shadow:
-    5px 14px 35px #565b3c13,
-    0 1px 2px #565b3c13;
+    5px 14px 35px #8f7e5813,
+    0 1px 2px #8f7e5813;
   transform: rotate(-7deg);
   display: flex;
   flex-direction: column;
@@ -285,13 +294,13 @@ svg {
 }
 .paper-top {
   margin-top: 32px;
-  font-size: 8px;
+  font-size: 0.875rem;
   letter-spacing: 0.34em;
   color: var(--gold-ink);
 }
 .monogram {
   font-family: var(--font-serif);
-  color: var(--color-eucalyptus);
+  color: var(--color-gold-detail);
   position: relative;
   width: 180px;
   height: 190px;
@@ -329,34 +338,34 @@ svg {
   margin: 18px 0 13px;
 }
 .paper-bottom small {
-  font-size: 7px;
-  letter-spacing: 0.24em;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
   line-height: 2;
   color: var(--gold-ink);
 }
 .hero-botanical {
   position: absolute;
-  color: #61735a;
+  color: var(--color-gold-detail);
   width: 330px;
   height: 475px;
   top: -18px;
   right: -104px;
   transform: rotate(11deg);
-  filter: drop-shadow(3px 8px 3px #4455350d);
+  filter: drop-shadow(3px 8px 3px #8f7e580d);
 }
 .wax-seal {
   position: absolute;
   width: 62px;
   height: 62px;
   border-radius: 50%;
-  background: #9ea488;
+  background: #d4c098;
   bottom: 13px;
   left: 54%;
   box-shadow:
-    inset 0 0 0 4px #969e81,
-    inset 0 0 0 5px #b4b89e,
-    2px 4px 9px #53633b24;
-  color: #e8eadb;
+    inset 0 0 0 4px #c3ae83,
+    inset 0 0 0 5px #e7d9bb,
+    2px 4px 9px #8f7e5824;
+  color: var(--color-gold);
   display: grid;
   place-items: center;
   transform: rotate(-14deg);
@@ -367,15 +376,16 @@ svg {
   stroke-width: 0.9;
 }
 .art-caption {
-  font-size: 7px;
-  letter-spacing: 0.27em;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
   color: var(--muted);
   position: absolute;
-  top: -10px;
-  left: 80px;
+  top: -24px;
+  inset-inline: 0;
+  text-align: center;
 }
 .art-side-note {
-  font-size: 7px;
+  font-size: 0.875rem;
   letter-spacing: 0.23em;
   color: var(--muted);
   position: absolute;
@@ -388,13 +398,15 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
   padding: 27px 0 36px;
 }
 .discover {
   display: inline-flex;
   align-items: center;
   gap: 28px;
-  font-size: 8px;
+  font-size: 0.875rem;
   letter-spacing: 0.16em;
   color: var(--muted);
   min-height: 44px;
@@ -409,7 +421,7 @@ svg {
 }
 .countdown-wrap > .eyebrow {
   max-width: 110px;
-  font-size: 8px;
+  font-size: 0.875rem;
   letter-spacing: 0.15em;
 }
 .countdown {
@@ -426,7 +438,7 @@ svg {
   position: absolute;
   left: -16px;
   top: 6px;
-  color: #b6b5a8;
+  color: #b6a789;
   font-family: var(--font-serif);
   font-size: 23px;
 }
@@ -438,15 +450,15 @@ svg {
   margin: 0;
 }
 .countdown dt {
-  font-size: 7px;
+  font-size: 0.875rem;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   margin-top: 4px;
   color: var(--muted);
 }
 
 .family-section {
-  background: #f1f2eb;
+  background: #f7f3eb;
 }
 .family-section .section-title {
   max-width: 530px;
@@ -461,10 +473,10 @@ svg {
   padding: 12px 20px;
 }
 .family-group + .family-group {
-  border-left: 1px solid #d4d9cc;
+  border-left: 1px solid #ddd0b5;
 }
 .family-group h3 {
-  font-size: 9px;
+  font-size: 0.875rem;
   letter-spacing: 0.17em;
 }
 .family-group > p {
@@ -489,7 +501,7 @@ svg {
 }
 .section-heading .section-intro {
   margin-bottom: 4px;
-  font-size: 12px;
+  font-size: 0.875rem;
 }
 .event-grid {
   display: grid;
@@ -503,27 +515,27 @@ svg {
   height: 100%;
   border: 1px solid var(--rule);
   background: #fdfcf8;
-  box-shadow: 0 10px 28px #4a493b05;
+  box-shadow: 0 10px 28px #8f7e5805;
   transition:
     box-shadow 0.3s,
     transform 0.3s;
 }
 .event-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 16px 35px #4a493b0d;
+  box-shadow: 0 16px 35px #8f7e580d;
 }
 .venue-illustration {
   height: 205px;
-  background: #eeeee4;
+  background: #eee4d1;
   position: relative;
   overflow: hidden;
   display: grid;
   place-items: center;
   isolation: isolate;
-  color: #76816a;
+  color: #9b814b;
 }
 .venue-illustration.garden {
-  background: #e9ede4;
+  background: #efe5d0;
 }
 .venue-illustration > svg {
   width: 92px;
@@ -535,7 +547,7 @@ svg {
   position: absolute;
   width: 182px;
   height: 186px;
-  border: 1px solid #b7bea68c;
+  border: 1px solid #bea9798c;
   border-radius: 100px 100px 0 0;
   bottom: -1px;
   z-index: -1;
@@ -544,7 +556,7 @@ svg {
   content: '';
   position: absolute;
   inset: 9px 10px -1px;
-  border: 1px solid #c7cbb780;
+  border: 1px solid #cbb99180;
   border-radius: inherit;
 }
 .venue-ground {
@@ -552,7 +564,7 @@ svg {
   bottom: 32px;
   width: 60%;
   height: 1px;
-  background: #c2c7b373;
+  background: #c7b38b73;
 }
 .event-card-content {
   padding: 29px 35px 30px;
@@ -562,12 +574,16 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-}
-.event-label .eyebrow {
-  font-size: 8px;
+  flex-wrap: wrap;
 }
 .event-label time {
-  font-size: 11px;
+  white-space: nowrap;
+}
+.event-label .eyebrow {
+  font-size: 0.875rem;
+}
+.event-label time {
+  font-size: 0.875rem;
   color: var(--gold-ink);
   letter-spacing: 0.06em;
 }
@@ -596,7 +612,7 @@ svg {
   margin-left: 50px;
   margin-top: 15px;
   transform: rotate(-24deg);
-  color: #9aa48a;
+  color: #b69c65;
   opacity: 0.65;
 }
 .timeline {
@@ -606,7 +622,7 @@ svg {
 }
 .timeline > li {
   display: grid;
-  grid-template-columns: 79px 43px 1fr;
+  grid-template-columns: 88px 43px 1fr;
   column-gap: 20px;
   min-height: 95px;
   position: relative;
@@ -617,12 +633,12 @@ svg {
   position: absolute;
   top: 39px;
   bottom: 0;
-  left: 120px;
-  background: #d5dbcd;
+  left: 129px;
+  background: #ddceb0;
 }
 .timeline time {
   padding-top: 11px;
-  font-size: 11px;
+  font-size: 0.875rem;
   color: var(--gold-ink);
   white-space: nowrap;
 }
@@ -631,9 +647,9 @@ svg {
   place-items: center;
   width: 43px;
   height: 43px;
-  border: 1px solid #d5dbcd;
+  border: 1px solid #ddceb0;
   border-radius: 50%;
-  color: var(--color-eucalyptus);
+  color: var(--color-gold);
 }
 .timeline-mark svg {
   width: 22px;
@@ -647,15 +663,16 @@ svg {
   padding-top: 5px;
 }
 .timeline li p {
-  font-size: 12px;
+  font-size: 0.875rem;
   line-height: 1.8;
   color: var(--muted);
   margin-top: 6px;
   padding-bottom: 22px;
 }
 .dress-section {
-  background: var(--deep-green);
-  color: var(--color-ivory);
+  background: var(--champagne-panel);
+  color: var(--color-graphite);
+  border-block: 1px solid var(--rule);
 }
 .dress-layout {
   display: grid;
@@ -664,13 +681,13 @@ svg {
   align-items: center;
 }
 .dress-section .eyebrow {
-  color: #e0ce9c;
+  color: var(--gold-text);
 }
 .dress-section .section-title em {
-  color: #dcdcc4;
+  color: #8f774d;
 }
 .dress-section .section-intro {
-  color: #d3dacf;
+  color: var(--muted);
 }
 .dress-options {
   display: grid;
@@ -678,26 +695,26 @@ svg {
   text-align: center;
 }
 .dress-options > div + div {
-  border-left: 1px solid #83947e60;
+  border-left: 1px solid #c0a56d60;
 }
 .dress-options svg {
   width: 53px;
   height: 53px;
   stroke-width: 0.65;
   margin: 0 auto 17px;
-  color: #e0ce9c;
+  color: #9a8255;
 }
 .dress-options h3 {
   font-family: var(--font-serif);
   font-size: 28px;
 }
 .dress-options p {
-  font-size: 12px;
+  font-size: 0.875rem;
   margin-top: 8px;
-  color: #d3dacf;
+  color: var(--muted);
 }
 .dress-note {
-  border-top: 1px solid #83947e60;
+  border-top: 1px solid #c0a56d60;
   margin-top: 30px;
   padding-top: 24px;
   display: flex;
@@ -705,12 +722,12 @@ svg {
   align-items: center;
 }
 .dress-note p {
-  font-size: 12px;
+  font-size: 0.875rem;
   line-height: 1.9;
-  color: #d3dacf;
+  color: var(--muted);
 }
 .dress-note strong {
-  color: #fffdf5;
+  color: var(--color-graphite);
   font-weight: 500;
 }
 .dress-swatches {
@@ -721,7 +738,7 @@ svg {
 .dress-swatches span {
   width: 25px;
   height: 25px;
-  border: 2px solid var(--deep-green);
+  border: 2px solid var(--champagne-panel);
   border-radius: 50%;
   background: #fdfbf7;
   margin-left: -9px;
@@ -779,7 +796,7 @@ svg {
 .registry-brand span {
   font-family: var(--font-sans);
   display: block;
-  font-size: 6px;
+  font-size: 0.875rem;
   letter-spacing: 0.3em;
   margin-top: 10px;
 }
@@ -790,13 +807,13 @@ svg {
   margin: 26px auto;
 }
 .registry-card .eyebrow {
-  font-size: 8px;
+  font-size: 0.875rem;
 }
 .registry-number {
   margin: 16px 0 25px;
 }
 .registry-number > span {
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
 }
 .registry-number strong {
@@ -809,13 +826,13 @@ svg {
 .copy-feedback {
   min-height: 32px;
   margin-top: 17px;
-  font-size: 10px;
+  font-size: 0.875rem;
   line-height: 1.8;
   color: var(--muted);
 }
 .rsvp-section {
-  background: #edefe6;
-  border-top: 1px solid #e0e4d8;
+  background: #f6f1e7;
+  border-top: 1px solid #e3d6bb;
 }
 .rsvp-layout {
   display: grid;
@@ -837,27 +854,27 @@ svg {
 .rsvp-deadline > span {
   display: block;
   font-size: 19px;
-  color: var(--color-eucalyptus);
+  color: var(--color-gold);
   margin-top: 1px;
 }
 .rsvp-contacts {
   margin-top: 38px;
   padding-top: 28px;
-  border-top: 1px solid #cbd2c0;
+  border-top: 1px solid #d3bf97;
   max-width: 260px;
 }
 .rsvp-contacts p {
-  font-size: 12px;
+  font-size: 0.875rem;
   margin-bottom: 12px;
-  color: #636f61;
+  color: #6f6555;
 }
 .rsvp-contacts a {
   display: flex;
   align-items: center;
   gap: 10px;
   min-height: 44px;
-  font-size: 12px;
-  color: var(--deep-green);
+  font-size: 0.875rem;
+  color: var(--gold-text);
 }
 .rsvp-contacts svg {
   width: 16px;
@@ -868,9 +885,9 @@ svg {
 }
 .rsvp-form {
   background: #fdfcf7;
-  border: 1px solid #dfe1d4;
+  border: 1px solid #dfd0b3;
   padding: 35px;
-  box-shadow: 0 12px 36px #384a3610;
+  box-shadow: 0 12px 36px #8f7e5810;
 }
 .rsvp-personal {
   text-align: center;
@@ -896,21 +913,21 @@ svg {
 }
 .rsvp-personal > p > span {
   display: block;
-  color: var(--deep-green);
+  color: var(--gold-text);
 }
 .rsvp-personal strong {
   font-weight: 500;
 }
 .rsvp-personal small {
   display: block;
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.8;
   margin-top: 11px;
 }
 .field {
   display: block;
-  font-size: 11px;
+  font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.6;
   margin-bottom: 19px;
@@ -919,21 +936,26 @@ svg {
 .field select,
 .field textarea {
   width: 100%;
-  border: 1px solid #d9dbce;
+  border: 1px solid #9b865e;
   background: transparent;
   padding: 13px 12px;
   min-height: 46px;
-  font-size: 11px;
+  font-size: 0.875rem;
   line-height: 1.5;
   color: var(--color-graphite);
   margin-top: 7px;
   border-radius: 0;
   transition: border-color 0.2s;
 }
+.field input,
+.field select,
+.field textarea {
+  font-size: 1rem;
+}
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
-  border-color: var(--color-eucalyptus);
+  border-color: var(--color-gold);
   outline-offset: 2px;
 }
 .field textarea {
@@ -943,8 +965,8 @@ svg {
 }
 .field input::placeholder,
 .field textarea::placeholder {
-  color: #818477;
-  font-size: 10px;
+  color: #6f6555;
+  font-size: 0.875rem;
   font-weight: 400;
 }
 .optional {
@@ -958,7 +980,7 @@ svg {
   min-width: 0;
 }
 .attendance-field legend {
-  font-size: 11px;
+  font-size: 0.875rem;
   font-weight: 500;
   margin-bottom: 8px;
 }
@@ -982,9 +1004,9 @@ svg {
   justify-content: center;
   align-items: center;
   gap: 7px;
-  font-size: 11px;
+  font-size: 0.875rem;
   min-height: 45px;
-  border: 1px solid #d9dbce;
+  border: 1px solid #9b865e;
   padding: 8px;
   line-height: 1.5;
   transition:
@@ -996,22 +1018,17 @@ svg {
   height: 13px;
 }
 .attendance-options input:checked + span {
-  background: #e9ede1;
-  border-color: #738167;
-  color: var(--deep-green);
+  background: var(--color-champagne);
+  border-color: #8d723e;
+  color: var(--gold-text);
 }
 .attendance-options input:focus-visible + span {
   outline: 2px solid var(--gold-ink);
   outline-offset: 3px;
 }
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
-  gap: 14px;
-}
 .form-status {
   text-align: center;
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.8;
   margin-top: 12px;
@@ -1027,7 +1044,7 @@ svg {
   font-family: var(--font-serif);
   font-size: 25px;
   line-height: 1.35;
-  color: #747967;
+  color: #6f6555;
   font-style: italic;
 }
 .footer-names {
@@ -1043,7 +1060,7 @@ svg {
   padding-inline: 5px;
 }
 .footer-section .eyebrow {
-  font-size: 8px;
+  font-size: 0.875rem;
 }
 .footer-bottom {
   margin-top: 70px;
@@ -1054,7 +1071,7 @@ svg {
   align-items: center;
   gap: 20px;
   color: var(--muted);
-  font-size: 7px;
+  font-size: 0.875rem;
   letter-spacing: 0.12em;
 }
 .footer-bottom a {
@@ -1080,19 +1097,19 @@ svg {
   gap: 10px;
   min-height: 47px;
   padding: 12px 17px;
-  border: 1px solid #c7cbbc;
+  border: 1px solid #cbb991;
   border-radius: 30px;
   background: #fdfbf7ed;
   backdrop-filter: blur(14px);
-  box-shadow: 0 4px 20px #40594e14;
-  color: var(--deep-green);
+  box-shadow: 0 4px 20px #8f7e5814;
+  color: var(--gold-text);
 }
 .audio-toggle > svg {
   width: 17px;
   height: 17px;
 }
 .audio-label {
-  font-size: 9px;
+  font-size: 0.875rem;
   letter-spacing: 0.04em;
 }
 .audio-panel {
@@ -1103,10 +1120,10 @@ svg {
   padding: 24px;
   border: 1px solid var(--rule);
   background: #fdfbf7fa;
-  box-shadow: 0 12px 32px #40594e18;
+  box-shadow: 0 12px 32px #8f7e5818;
 }
 .audio-panel .eyebrow {
-  font-size: 7px;
+  font-size: 0.875rem;
 }
 .audio-panel p {
   font-family: var(--font-serif);
@@ -1115,7 +1132,7 @@ svg {
 }
 .audio-panel small {
   display: block;
-  font-size: 10px;
+  font-size: 0.875rem;
   color: var(--muted);
   line-height: 1.6;
 }
@@ -1123,10 +1140,10 @@ svg {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 10px;
+  font-size: 0.875rem;
   margin-top: 16px;
-  min-height: 35px;
-  color: var(--deep-green);
+  min-height: 44px;
+  color: var(--gold-text);
 }
 .audio-panel a svg {
   width: 15px;
@@ -1135,8 +1152,8 @@ svg {
   position: absolute;
   right: 5px;
   top: 5px;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   display: grid;
   place-items: center;
   color: var(--muted);
@@ -1154,7 +1171,7 @@ svg {
 .sound-wave i {
   width: 2px;
   height: 12px;
-  background: var(--color-eucalyptus);
+  background: var(--color-gold);
   animation: wave 1s ease-in-out infinite alternate;
 }
 .sound-wave i:nth-child(2) {
@@ -1204,6 +1221,9 @@ svg {
   }
 }
 @media (max-width: 1050px) {
+  .site-header nav .nav-detail {
+    display: none;
+  }
   .page-width {
     width: calc(100% - 64px);
   }
@@ -1220,8 +1240,7 @@ svg {
     top: -4px;
   }
   .art-caption {
-    left: 20px;
-    font-size: 6px;
+    font-size: 0.875rem;
   }
   .art-side-note {
     right: -12px;
@@ -1273,7 +1292,7 @@ svg {
     display: none;
   }
   .site-header nav .nav-rsvp {
-    font-size: 9px;
+    font-size: 0.875rem;
     gap: 14px;
   }
   .brand {
@@ -1288,7 +1307,7 @@ svg {
     inset: 23px 20px 15px 16px;
   }
   .paper-top {
-    font-size: 7px;
+    font-size: 0.875rem;
   }
   .monogram {
     transform: scale(0.85);
@@ -1311,12 +1330,11 @@ svg {
     bottom: 4px;
   }
   .art-caption {
-    left: 20px;
-    top: -2px;
+    top: -34px;
   }
   .art-side-note {
     right: -12px;
-    font-size: 6px;
+    font-size: 0.875rem;
     bottom: 86px;
   }
   .hero-bottom {
@@ -1332,19 +1350,19 @@ svg {
   }
   .countdown-wrap > .eyebrow {
     max-width: none;
-    font-size: 8px;
+    font-size: 0.875rem;
   }
   .countdown {
-    gap: 34px;
+    gap: 10px;
   }
   .countdown > div + div::before {
-    left: -19px;
+    left: -7px;
   }
   .countdown dd {
     font-size: 38px;
   }
   .countdown dt {
-    font-size: 7px;
+    font-size: 0.875rem;
   }
   .family-section .section-title {
     max-width: 360px;
@@ -1363,13 +1381,13 @@ svg {
   .family-group:last-child {
     grid-column: 1 / -1;
     border-left: 0;
-    border-top: 1px solid #d4d9cc;
+    border-top: 1px solid #ddd0b5;
     margin: 24px auto 0;
     padding: 28px 25px 0;
     width: 80%;
   }
   .family-group h3 {
-    font-size: 8px;
+    font-size: 0.875rem;
     letter-spacing: 0.1em;
   }
   .section-heading {
@@ -1377,7 +1395,7 @@ svg {
     margin-bottom: 30px;
   }
   .section-heading .section-intro {
-    font-size: 12px;
+    font-size: 0.875rem;
     margin-top: 18px;
   }
   .section-title {
@@ -1405,7 +1423,7 @@ svg {
     margin: 18px 0 20px;
   }
   .event-label .eyebrow {
-    font-size: 8px;
+    font-size: 0.875rem;
   }
   .event-card-content {
     padding: 27px;
@@ -1418,12 +1436,12 @@ svg {
     display: none;
   }
   .timeline > li {
-    grid-template-columns: 66px 40px 1fr;
+    grid-template-columns: 82px 40px 1fr;
     column-gap: 15px;
     min-height: 91px;
   }
   .timeline > li:not(:last-child)::after {
-    left: 101px;
+    left: 117px;
   }
   .timeline-mark {
     width: 40px;
@@ -1433,7 +1451,7 @@ svg {
     font-size: 26px;
   }
   .timeline li p {
-    font-size: 12px;
+    font-size: 0.875rem;
     max-width: 260px;
   }
   .dress-layout {
@@ -1487,7 +1505,7 @@ svg {
   }
   .field,
   .attendance-field legend {
-    font-size: 10px;
+    font-size: 0.875rem;
   }
   .field input,
   .field select,
@@ -1496,18 +1514,17 @@ svg {
   }
   .field input::placeholder,
   .field textarea::placeholder {
-    font-size: 12px;
+    font-size: 0.875rem;
   }
   .attendance-options span {
-    font-size: 11px;
+    font-size: 0.875rem;
   }
-  .form-row {
-    gap: 0;
+  .attendance-options {
     grid-template-columns: 1fr;
   }
   .form-status,
   .copy-feedback {
-    font-size: 9px;
+    font-size: 0.875rem;
   }
   .footer-section {
     padding: 64px 0 90px;
@@ -1520,7 +1537,7 @@ svg {
     margin-top: 45px;
     flex-direction: column;
     gap: 3px;
-    font-size: 7px;
+    font-size: 0.875rem;
   }
   .audio-widget {
     left: 14px;
@@ -1546,7 +1563,7 @@ svg {
     font-size: 21px;
   }
   .paper-bottom small {
-    font-size: 6px;
+    font-size: 0.875rem;
   }
   .section-title {
     font-size: 38px;
@@ -1558,7 +1575,7 @@ svg {
     font-size: 19px;
   }
   .family-group h3 {
-    font-size: 7px;
+    font-size: 0.875rem;
   }
   .event-card-content {
     padding: 23px;
@@ -1568,10 +1585,10 @@ svg {
   }
   .timeline > li {
     column-gap: 11px;
-    grid-template-columns: 61px 37px 1fr;
+    grid-template-columns: 82px 37px 1fr;
   }
   .timeline > li:not(:last-child)::after {
-    left: 90px;
+    left: 111px;
   }
   .timeline-mark {
     width: 37px;
@@ -1581,15 +1598,38 @@ svg {
     font-size: 23px;
   }
   .timeline time {
-    font-size: 11px;
+    font-size: 0.875rem;
   }
   .rsvp-form {
     padding-inline: 17px;
   }
   .attendance-options span {
-    font-size: 11px;
+    font-size: 0.875rem;
   }
 }
+.not-found {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: 48px;
+  text-align: center;
+}
+.not-found-code {
+  margin-top: 32px;
+  font-family: var(--font-serif);
+  font-size: clamp(100px, 20vw, 180px);
+  line-height: 1;
+  color: var(--gold-display);
+}
+.not-found .section-intro {
+  max-width: 480px;
+}
+.not-found .button {
+  margin-top: 32px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

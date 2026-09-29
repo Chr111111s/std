@@ -1,12 +1,19 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useSyncExternalStore } from 'react'
 import { parseInvitation } from '@/lib/invitation'
 
+function subscribe(onChange: () => void) {
+  window.addEventListener('popstate', onChange)
+  return () => window.removeEventListener('popstate', onChange)
+}
+
+function getLocation() {
+  return window.location.pathname + window.location.search
+}
+
 export function useInvitation() {
-  const [search, setSearch] = useState(() => window.location.search)
-  useEffect(() => {
-    const sync = () => setSearch(window.location.search)
-    window.addEventListener('popstate', sync)
-    return () => window.removeEventListener('popstate', sync)
-  }, [])
-  return useMemo(() => parseInvitation(search), [search])
+  const location = useSyncExternalStore(subscribe, getLocation)
+  return useMemo(() => {
+    const url = new URL(location, window.location.origin)
+    return parseInvitation(url.pathname, url.search)
+  }, [location])
 }

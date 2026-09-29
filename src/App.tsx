@@ -9,8 +9,13 @@ import { RsvpSection } from '@/components/RsvpSection'
 import { FooterSection } from '@/components/FooterSection'
 import { AudioPlayer } from '@/components/AudioPlayer'
 import { Icon } from '@/components/ui/Icon'
+import { NotFoundPage } from '@/components/NotFoundPage'
+import { useInvitation } from '@/hooks/useInvitation'
 
 export default function App() {
+  const invitation = useInvitation()
+  if (!invitation) return <NotFoundPage />
+
   return (
     <>
       <a className="skip-link" href="#contenido">
@@ -47,7 +52,7 @@ export default function App() {
         <TimelineSection />
         <DressCodeSection />
         <GiftRegistrySection />
-        <RsvpSection />
+        <RsvpSection invitation={invitation} />
       </main>
       <FooterSection />
       <AudioPlayer />
