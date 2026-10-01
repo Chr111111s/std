@@ -20,7 +20,7 @@ export function FooterSection() {
         </div>
       </Reveal>
       <div className="developer-credit page-width">
-        <span>design by chris aviles</span>
+        <span>Design by chris aviles</span>
         <a
           href="https://wa.me/527775201281"
           target="_blank"
