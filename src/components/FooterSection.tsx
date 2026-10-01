@@ -19,6 +19,23 @@ export function FooterSection() {
           </a>
         </div>
       </Reveal>
+      <div className="developer-credit page-width">
+        <span>design by chris aviles</span>
+        <a
+          href="https://wa.me/527775201281"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contactar a Chris Aviles por WhatsApp"
+        >
+          <Icon name="whatsapp" />
+        </a>
+        <a
+          href="mailto:avilessotelo@gmail.com"
+          aria-label="Enviar correo a Chris Aviles"
+        >
+          <Icon name="mail" />
+        </a>
+      </div>
     </footer>
   )
 }
