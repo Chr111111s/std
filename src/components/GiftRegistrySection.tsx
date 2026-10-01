@@ -16,14 +16,13 @@ export function GiftRegistrySection() {
           <Icon name="gift" className="section-icon" />
           <p className="eyebrow">DETALLES QUE GUARDAMOS EN EL CORAZÓN</p>
           <h2 id="gifts-title" className="section-title">
-            Tu presencia,
+            El mejor regalo que nos puedes dar,
             <br />
-            <em>nuestro mejor regalo.</em>
+            <em>es tu presencia.</em>
           </h2>
           <p className="section-intro">
-            Si deseas tener un detalle con nosotros,
-            <br className="hidden sm:block" /> hemos preparado una mesa de
-            regalos.
+            Pero si quieres obsequiarnos algo,
+            <br className="hidden sm:block" /> puedes hacerlo en:
           </p>
         </div>
         <div className="registry-card">

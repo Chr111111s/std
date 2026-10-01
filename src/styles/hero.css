@@ -46,9 +46,13 @@
 }
 
 .cover-copy > .eyebrow {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #fdfbf7ed;
   font-size: 0.875rem;
+  font-weight: 600;
   letter-spacing: 0.17em;
-  color: var(--gold-text);
+  color: #433d32;
 }
 
 .cover-names {
@@ -82,10 +86,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: clamp(6px, 2vw, 12px);
   margin: 23px 0;
-  font-size: 0.875rem;
-  letter-spacing: 0.17em;
+  font-size: clamp(1.125rem, 3.8vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
   color: var(--gold-text);
 }
 
@@ -191,7 +196,7 @@
   .cover-date {
     justify-content: flex-start;
     margin-block: 30px;
-    font-size: 0.875rem;
+    font-size: 1.5rem;
   }
 
   .hero-dedication {

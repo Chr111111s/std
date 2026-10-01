@@ -11,6 +11,7 @@ import { AudioPlayer } from '@/components/AudioPlayer'
 import { Icon } from '@/components/ui/Icon'
 import { NotFoundPage } from '@/components/NotFoundPage'
 import { useInvitation } from '@/hooks/useInvitation'
+import logo from '../resources/logo.png'
 
 export default function App() {
   const invitation = useInvitation()
@@ -27,7 +28,13 @@ export default function App() {
           className="brand"
           aria-label="Valeria y Eduardo, inicio"
         >
-          V<span>&</span>E
+          <img
+            className="brand-logo"
+            src={logo}
+            alt=""
+            width="1024"
+            height="1024"
+          />
         </a>
         <nav aria-label="Navegación principal">
           <a className="nav-detail" href="#celebracion">

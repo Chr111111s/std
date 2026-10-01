@@ -213,18 +213,17 @@ svg {
   border-bottom: 1px solid var(--rule);
 }
 .brand {
-  font-family: var(--font-serif);
-  font-size: 33px;
-  letter-spacing: -0.09em;
   display: inline-flex;
   align-items: center;
+  flex-shrink: 0;
   min-height: 44px;
 }
-.brand span {
-  font-style: italic;
-  font-size: 19px;
-  color: var(--gold-ink);
-  margin-inline: 5px;
+.brand-logo {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
 }
 .site-header nav {
   display: flex;
@@ -736,8 +735,8 @@ svg {
   flex-shrink: 0;
 }
 .dress-swatches span {
-  width: 25px;
-  height: 25px;
+  width: 44px;
+  height: 44px;
   border: 2px solid var(--champagne-panel);
   border-radius: 50%;
   background: #fdfbf7;
@@ -750,11 +749,11 @@ svg {
 .dress-swatches span::after {
   content: '';
   height: 1px;
-  width: 22px;
+  width: 90%;
   position: absolute;
-  top: 10px;
-  left: 0;
-  transform: rotate(-45deg);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
   background: #8e746f;
 }
 .gift-layout {
@@ -762,6 +761,33 @@ svg {
   grid-template-columns: 1fr 1fr;
   gap: 85px;
   align-items: center;
+}
+.gifts-section .section-icon {
+  margin-bottom: 18px;
+}
+.gifts-section .section-title {
+  max-width: 22ch;
+  margin-top: 22px;
+  font-size: clamp(2.125rem, 3.8vw, 3rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.gifts-section .section-title em {
+  display: block;
+  margin-top: 10px;
+  font-size: 1.12em;
+}
+.gifts-section .section-title br,
+.gifts-section .section-intro br {
+  display: none;
+}
+.gifts-section .section-intro {
+  max-width: 34ch;
+  margin-top: 28px;
+  font-size: 1rem;
+  line-height: 1.8;
+  text-wrap: balance;
 }
 .registry-card {
   padding: 48px 36px 31px;
@@ -1301,8 +1327,9 @@ svg {
     font-size: 0.875rem;
     gap: 14px;
   }
-  .brand {
-    font-size: 30px;
+  .brand-logo {
+    width: 72px;
+    height: 72px;
   }
   .hero-art {
     width: min(345px, 87%);

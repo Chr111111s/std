@@ -17,8 +17,7 @@ export function DressCodeSection() {
             <em>Formal.</em>
           </h2>
           <p className="section-intro">
-            Nos vestimos de fiesta para
-            <br />
+            Nos vestimos de fiesta para <br />
             una ocasión irrepetible.
           </p>
         </div>
