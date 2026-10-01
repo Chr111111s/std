@@ -36,7 +36,8 @@ export const wedding = {
     },
     {
       kind: 'garden',
-      photo: null,
+      photo: photos.salon,
+      photoPosition: '70%',
       title: 'La recepción',
       name: 'Salón Jardín “Santa María”',
       time: '04:30 PM',

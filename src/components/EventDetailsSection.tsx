@@ -34,6 +34,11 @@ export function EventDetailsSection() {
                       sizes="(max-width: 760px) calc(100vw - 44px), (max-width: 1280px) 45vw, 575px"
                       loading="lazy"
                       decoding="async"
+                      style={
+                        'photoPosition' in venue
+                          ? { objectPosition: venue.photoPosition }
+                          : undefined
+                      }
                     />
                   </div>
                 ) : (

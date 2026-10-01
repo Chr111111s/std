@@ -33,4 +33,8 @@ export const photos = {
     ...files.iglesia,
     alt: 'Interior de la Iglesia de San Francisco de Asís, con bancas de madera y una cruz frente al jardín.',
   },
+  salon: {
+    ...files.salon,
+    alt: 'Vista del Salón Jardín “Santa María”, el lugar de la recepción.',
+  },
 }

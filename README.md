@@ -68,7 +68,9 @@ La portada usa una fotografía de fondo de ancho completo, con un velo para faci
 
 Las fotografías originales se conservan en `resources/`. La sección “Nuestra historia, en imágenes” presenta las siete fotos de la pareja después de las familias; en móvil, las cinco imágenes de la galería inferior se recorren horizontalmente. La composición botánica original situada arriba del contador se conserva.
 
-La tarjeta de la ceremonia utiliza `iglesia.jpg`. La del salón conserva su ilustración mientras llega su fotografía; para incorporarla después, añade su recurso en `photos.ts` y asígnalo a `photo` en la recepción dentro de `wedding.ts`.
+Las tarjetas de ubicaciones usan `iglesia.jpg` y `salon.jpeg`, ambas dentro de un marco 3:2 con `object-fit: cover`, por lo que comparten tamaño y forma. El salón es vertical (820×1024), así que `photoPosition: '70%'` en `wedding.ts` descarta la franja superior, que está sobreexpuesta, y mantiene la imagen centrada en el marco; la iglesia, ya casi 3:2, se queda en el valor por defecto.
+
+Para incorporar otro recurso, añádelo en `resources/`, ejecuta `scripts/prepare-photos.ps1` y después `npm.cmd run format` (PowerShell escribe el JSON con otro sangrado), añade su entrada en `photos.ts` y asígnala a `photo` en `wedding.ts`.
 
 `public/photos/` contiene variantes JPEG de hasta 640 y 1440 píxeles de ancho, con `srcSet`, `sizes`, dimensiones explícitas y carga diferida. Los originales no se sirven ni se incluyen en la compilación. `scripts/prepare-photos.ps1` permite regenerar las variantes en Windows mediante System.Drawing, respetando la orientación y sin modificar los originales.
 

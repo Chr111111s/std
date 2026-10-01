@@ -5,6 +5,12 @@
     "width": 1233,
     "height": 818
   },
+  "salon": {
+    "src": "/photos/salon-820.jpg",
+    "srcSet": "/photos/salon-640.jpg 640w, /photos/salon-820.jpg 820w",
+    "width": 820,
+    "height": 1024
+  },
   "STD-11": {
     "src": "/photos/std-11-1440.jpg",
     "srcSet": "/photos/std-11-640.jpg 640w, /photos/std-11-1440.jpg 1440w",

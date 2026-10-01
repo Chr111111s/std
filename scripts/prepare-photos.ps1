@@ -8,7 +8,7 @@ New-Item -ItemType Directory -Path $outputDirectory -Force | Out-Null
 $jpegEncoder = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object MimeType -eq 'image/jpeg'
 $metadata = [ordered]@{}
 
-Get-ChildItem -LiteralPath $sourceDirectory -Filter '*.jpg' | ForEach-Object {
+Get-ChildItem -LiteralPath $sourceDirectory | Where-Object { $_.Extension -in @('.jpg', '.jpeg') } | ForEach-Object {
   $sourceFile = $_
   $photo = [System.Drawing.Image]::FromFile($sourceFile.FullName, $true)
   try {
