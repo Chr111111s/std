@@ -604,11 +604,12 @@ svg {
 }
 .timeline-intro {
   position: relative;
+  text-align: center;
 }
 .timeline-botanical {
   width: 176px;
   height: 225px;
-  margin-left: 50px;
+  margin-inline: auto;
   margin-top: 15px;
   transform: rotate(-24deg);
   color: #b69c65;
@@ -678,6 +679,11 @@ svg {
   grid-template-columns: 1fr 1.1fr;
   gap: 70px;
   align-items: center;
+}
+.dress-section .eyebrow,
+.dress-section .section-title,
+.dress-section .section-intro {
+  text-align: center;
 }
 .dress-section .eyebrow {
   color: var(--gold-text);
@@ -1075,7 +1081,7 @@ svg {
   min-height: 29px;
 }
 .footer-section {
-  padding: 78px 0 25px;
+  padding: 78px 0 12px;
   text-align: center;
 }
 .footer-quote {
@@ -1597,7 +1603,7 @@ svg {
     font-size: 0.875rem;
   }
   .footer-section {
-    padding: 64px 0 90px;
+    padding: 64px 0 12px;
   }
   .footer-quote {
     font-size: 24px;
