@@ -761,12 +761,15 @@ svg {
   grid-template-columns: 1fr 1fr;
   gap: 85px;
   align-items: center;
+  text-align: center;
 }
 .gifts-section .section-icon {
+  margin-inline: auto;
   margin-bottom: 18px;
 }
 .gifts-section .section-title {
   max-width: 22ch;
+  margin-inline: auto;
   margin-top: 22px;
   font-size: clamp(2.125rem, 3.8vw, 3rem);
   line-height: 1.18;
@@ -784,6 +787,7 @@ svg {
 }
 .gifts-section .section-intro {
   max-width: 34ch;
+  margin-inline: auto;
   margin-top: 28px;
   font-size: 1rem;
   line-height: 1.8;
@@ -868,6 +872,7 @@ svg {
 }
 .rsvp-intro {
   padding-top: 26px;
+  text-align: center;
 }
 .rsvp-intro .section-title {
   font-size: clamp(46px, 5vw, 66px);
@@ -885,6 +890,7 @@ svg {
 }
 .rsvp-contacts {
   margin-top: 38px;
+  margin-inline: auto;
   padding-top: 28px;
   border-top: 1px solid #d3bf97;
   max-width: 260px;
@@ -897,6 +903,8 @@ svg {
 .rsvp-contacts a {
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-inline: auto;
   gap: 10px;
   min-height: 44px;
   font-size: 0.875rem;
@@ -907,7 +915,7 @@ svg {
   height: 16px;
 }
 .rsvp-contacts svg:last-child {
-  margin-left: auto;
+  margin-left: 0;
 }
 .rsvp-form {
   background: #fdfcf7;

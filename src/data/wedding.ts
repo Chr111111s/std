@@ -85,7 +85,7 @@ export const wedding = {
   ],
   registry: '60014617',
   contacts: [
-    { label: '55 4562 3019', phone: '525545623019' },
+    { label: '55 3240 1341', phone: '5532401341' },
     { label: '55 8573 0063', phone: '525585730063' },
   ],
   audio: {
