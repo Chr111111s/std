@@ -38,7 +38,7 @@ export const wedding = {
       kind: 'garden',
       photo: photos.salon,
       photoPosition: '70%',
-      title: 'La recepción',
+      title: 'Recepción',
       name: 'Salón Jardín “Santa María”',
       time: '04:30 PM',
       dateTime: '2026-12-05T16:30:00-06:00',
@@ -85,8 +85,8 @@ export const wedding = {
   ],
   registry: '60014617',
   contacts: [
-    { label: '55 3240 1341', phone: '5532401341' },
-    { label: '55 8573 0063', phone: '525585730063' },
+    { label: 'Novio: +52 55 4562 3019', phone: '525545623019' },
+    { label: 'Novia: +52 55 8573 0063', phone: '525585730063' },
   ],
   audio: {
     title: 'Dandelions',
